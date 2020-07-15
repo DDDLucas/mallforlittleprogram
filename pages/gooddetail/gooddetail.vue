@@ -104,9 +104,9 @@
 				</view>
 				{{favor?"已收藏":"收藏"}}
 			</button>
-			<button class="action">
-				<view class="cuIcon-cart ">
-					<view class="cu-tag badge">10</view>
+			<button  @tap="addCart" class="action">
+				<view  class="cuIcon-cart ">
+					<view v-if="$store.state.carts.length>0" class="cu-tag badge">{{$store.state.carts.length}}</view>
 				</view>
 				购物车
 			</button>
@@ -148,6 +148,21 @@
 			}	
 		},
 		methods: {
+			addCart(){
+				var d= this.detail;
+				var newgoods={
+					image: d.image,
+					name: d.name,
+					price: d.price,
+					num:1,
+					goods_id:d.goods_id,
+					tags: d.tags,
+					checked: true
+				};
+				this.$store.dispatch("add_carts",newgoods);
+				console.log(newgoods);
+				console.log(this.$store.state.carts);
+			},
 			gettags(str){
 				var colors = ["bg-red","bg-orange","bg-yellow","bg-green","bg-blue"]
 				this.tags=[];
@@ -221,9 +236,8 @@
 		onLoad(options) {
 			this.goods_id = options.id;
 			this.getdata();
-			var uid = uni.getStorageSync("uid");
-			console.log(uid)
 			this.getfavor();
+			this.$store.dispatch("init_carts");
 		}
 	}
 </script>

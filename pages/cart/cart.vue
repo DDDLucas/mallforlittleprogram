@@ -21,13 +21,14 @@
 					<checkbox-group>
 						<checkbox @tap="changeChecked(i)" :checked="p.checked" :class="p.checked==true? 'checked':''" class="sx-round" ></checkbox>
 					</checkbox-group>
-					<image :src="p.url"></image>	
+					<image :src="p.image"></image>	
 				</view>
 				<view class="flex cart-item-info">
-					<view class="cart-title" style="font-size: 150%; font-weight: solid;">{{p.info}}
+					<view class="cart-title" style="font-size: 150%; font-weight: solid;">
+						{{p.name}}
 					</view>
 					<view>
-						<view style="font-size: 100%;">类型：{{p.type}}</view>
+						<view style="font-size: 100%;">类型：{{p.tags}}</view>
 						<view class="flex justify-between">
 							<view style="color: red;">￥{{p.price}}</view>
 							<view>{{p.num}}</view>
@@ -59,15 +60,22 @@
 			return {
 				checked: false,
 				checked1: false,
-				cartlist:[]
+				
 				
 			}
 		},
 		// components:{uniNumberBox},
 		onLoad(){
-			this.getcartlist();
+			// this.getcartlist();
+			// var carts = this.$store.state.carts;
+			// console.log(carts);
+			this.$store.dispatch("init_carts");
 		},
 		computed:{  //计算属性
+			cartlist(){
+				console.log(this.$store.state.carts);
+				return this.$store.state.carts;
+			},
 			sum(){
 				var he=0;
 				this.cartlist.forEach(p=>{
